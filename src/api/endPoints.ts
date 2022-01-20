@@ -1,0 +1,1 @@
+export const wheater = 'https://api.openweathermap.org/data/2.5/';

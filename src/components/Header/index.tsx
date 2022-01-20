@@ -2,9 +2,14 @@ import React from "react";
 
 import { Container } from "./styles";
 
-const Header = () => (
+interface IpropsHeader {
+  getLocation: () => void;
+}
+
+const Header = ({ getLocation }: IpropsHeader) => (
   <Container>
-    <p>Header</p>
+    <h1>The Weather Web</h1>
+    <button onClick={() => getLocation()}>Obter Localização</button>
   </Container>
 );
 
