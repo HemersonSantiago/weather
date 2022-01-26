@@ -1,50 +1,83 @@
-import React, { useState } from "react";
-import { getWheater, IPropsGetWeather, IDataGetWeather } from "../../api/services/wheater-service";
+import React, { useState, useEffect } from "react";
+import {
+  getWheater,
+  IPropsGetWeather,
+  IDataGetWeather,
+} from "../../api/services/wheater-service";
 import { Header } from "../../components/Header";
-import { Container } from "../../components/Header/styles";
+import { WeatherImage } from "../../components/WeatherImage";
+import { WheaterInfo } from "../../components/WheaterInfo";
+import { Container, Wrapper, Input, WrapperSearch, Button } from "./styles";
+import { ToastContainer, toast } from "react-toast";
+
+interface IPropsShowPosition {
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
+}
 
 const Weather = () => {
   const [wheatherData, weatherData] = useState<IDataGetWeather | null>(null);
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState("");
+  const [dateTime, setDateTime] = useState(new Date());
 
-
-  const handleWeather = async ({city, lat, lon}: IPropsGetWeather) => {
+  const handleWeather = async ({ city, lat, lon }: IPropsGetWeather) => {
     try {
-      const  { data }  = await getWheater({city, lat, lon});
-      console.log("data >>>>.", data);
+      const { data } = await getWheater({ city, lat, lon });
       weatherData(data);
+      setDateTime(new Date());
     } catch (error) {
       weatherData(null);
-      console.log("error");
+      toast(`Nenhum dado encontrado para o lugar: ${city}`);
     }
-  }
+  };
 
+  const showPosition = (position: IPropsShowPosition) => {
+    if (position?.coords) {
+      const { latitude, longitude } = position.coords;
 
-	const getLocation = () => {
+      handleWeather({ lat: latitude, lon: longitude });
+    }
+  };
+
+  const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
     } else {
-      alert("Geolocalização não suportada neste browser!")
+      toast("Geolocalização não suportada neste browser!");
     }
   };
-  const showPosition = (position: any) => {
-    if (position?.coords) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-      handleWeather({lat, lon});
-    }
-  };
-  
+
+  useEffect(() => {
+    const latSp = -23.5489;
+    const lonSp = -46.6388;
+    handleWeather({ lat: latSp, lon: lonSp });
+  }, []);
 
   return (
     <Container>
       <Header getLocation={getLocation} />
-      <input name="city" onChange={e => setCity(e.target.value)} />
-      <button onClick={() => handleWeather({city})}>Pesquisar</button>
-      <br />
-      {wheatherData?.name}
-      <br />
-      {wheatherData && wheatherData.main.temp && `temperatura: ${wheatherData?.main.temp }`}
+      <Wrapper>
+        <WeatherImage
+          temperature={wheatherData?.main?.temp}
+          name={wheatherData?.name}
+        />
+
+        {wheatherData && <WheaterInfo {...wheatherData} dateTime={dateTime} />}
+      </Wrapper>
+      <WrapperSearch>
+        <Input name="city" onChange={(e) => setCity(e.target.value)} />
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            if (city) handleWeather({ city });
+          }}
+        >
+          Pesquisar
+        </Button>
+      </WrapperSearch>
+      <ToastContainer position="top-left" delay={2000} />
     </Container>
   );
 };

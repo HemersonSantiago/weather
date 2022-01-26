@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Container } from "./styles";
+import { Container, Title, Info, WrapperInfo,WrapperButton, Button  } from "./styles";
 
 interface IpropsHeader {
   getLocation: () => void;
@@ -8,8 +8,16 @@ interface IpropsHeader {
 
 const Header = ({ getLocation }: IpropsHeader) => (
   <Container>
-    <h1>The Weather Web</h1>
-    <button onClick={() => getLocation()}>Obter Localização</button>
+    <WrapperInfo>
+      <Title>É sempre agradável saber a previsão do tempo!</Title>
+      <Info>
+        Obtenha relatórios meteorológicos de ocorrência com data e hora e <br />
+        programa-se para cada situação.
+      </Info>
+    </WrapperInfo>
+    <WrapperButton>
+      <Button onClick={() => getLocation()}>Obter Localização</Button>
+    </WrapperButton>
   </Container>
 );
 

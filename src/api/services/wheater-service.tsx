@@ -7,7 +7,6 @@ export interface IDataGetWeather {
     lat: number;
     lon: number;
   };
-  dt: number;
   main: {
     humidity: number;
     temp: number;
@@ -20,6 +19,9 @@ export interface IDataGetWeather {
     sunrise: number;
     sunset: number;
   };
+  weather: {
+    description: string
+  }[]
 }
 
 export interface IPropsGetWeather {
