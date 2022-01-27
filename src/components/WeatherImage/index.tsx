@@ -13,8 +13,8 @@ const WeatherImage = ({ temperature, name }: IPropsWheaterImage) => {
   return (
     <Container>
       <Wrapper>
-        <Img src={desktop} alt="Weather" />
-        <MobileImg src={mobile} alt="teste2" />
+        <Img src={desktop} alt="WeatherDesktop" />
+        <MobileImg src={mobile} alt="WeatherMobile" />
         {temperature && (
           <Temp>
             <p>{temperature.toFixed(1)}ºC</p> <p>{name}</p>

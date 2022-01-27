@@ -6,7 +6,8 @@ import { NotFound404 } from ".";
 describe("<NotFound404 />", () => {
   it("should render title", () => {
     render(<NotFound404 />);
-
-    expect(screen.getByText(/notfound 404/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/404 \- página não encontrada!/i)
+    ).toBeInTheDocument();
   });
 });

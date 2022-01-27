@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+import  userEvent from "@testing-library/user-event"
 
 import { Header } from ".";
 
@@ -10,8 +11,6 @@ describe("<Header />", () => {
 
   it("should render title and button", () => {
     render(<Header {...props} />);
-
-    // screen.logTestingPlaygroundURL();
     expect(
       screen.getByRole("heading", {
         name: /é sempre agradável saber a previsão do tempo!/i,
@@ -23,6 +22,15 @@ describe("<Header />", () => {
       )
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /obter localização/i })).toBeInTheDocument();
+  });
+
+  it("should handle getLocation", () => {
+    render(<Header {...props} />);
+
+    const button = screen.getByRole("button", { name: /obter localização/i });
+    userEvent.click(button)
+    expect(props.getLocation).toHaveBeenCalled();
+
   });
 
 });

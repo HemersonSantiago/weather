@@ -16,8 +16,6 @@ export interface IDataGetWeather {
   name: string;
   sys: {
     country: string;
-    sunrise: number;
-    sunset: number;
   };
   weather: {
     description: string
